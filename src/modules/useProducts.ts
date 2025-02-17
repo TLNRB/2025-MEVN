@@ -12,7 +12,7 @@ interface Product {
    isHidden: boolean
 }
 
-export const useProduct = () => {
+export const useProducts = () => {
    const error = ref<string | null>(null);
    const loading = ref<boolean>(false);
    const products = ref<Product[]>([]);
