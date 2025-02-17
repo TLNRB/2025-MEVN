@@ -1,16 +1,5 @@
 import { ref } from 'vue';
-
-interface Product {
-   id: string,
-   name: string,
-   description: string,
-   imageURL: string,
-   price: number,
-   stock: number,
-   discount: boolean,
-   discountPct: number,
-   isHidden: boolean
-}
+import type { Product } from '@/interfaces/interfaces';
 
 export const useProducts = () => {
    const error = ref<string | null>(null);
