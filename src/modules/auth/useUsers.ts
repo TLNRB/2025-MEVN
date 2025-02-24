@@ -36,7 +36,7 @@ export const useUsers = () => {
          isLoggedIn.value = true;
 
          localStorage.setItem('lsToken', authResponse.data.token);
-         localStorage.setItem('userIDToken', authResponse.data.userId);
+         localStorage.setItem('userIdToken', authResponse.data.userId);
 
          console.log('Token:', token.value);
          console.log('User is logged in: ', authResponse);
@@ -81,7 +81,7 @@ export const useUsers = () => {
       user.value = null;
       isLoggedIn.value = false;
       localStorage.removeItem('lsToken');
-      localStorage.removeItem('userIDToken');
+      localStorage.removeItem('userIdToken');
       console.log('User is logged out');
    }
 
