@@ -1,7 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useUsers } from '@/modules/auth/useUsers';
 
 const { fetchToken, name, email, password, user } = useUsers();
+
+const registerDialog = ref<HTMLDialogElement | null>(null);
+
+const toggleRegisterDialog = () => {
+  if (registerDialog.value) {
+    registerDialog.value.open ? registerDialog.value.close() : registerDialog.value.show();
+  }
+}
 </script>
 
 <template>
@@ -22,7 +31,7 @@ const { fetchToken, name, email, password, user } = useUsers();
 
       <!-- Lower part: Register -->
       <div class="register-block">
-        <p class="mt-24 mb-4 text-2xl cursor-pointer flex-nowrap" >Click to register</p> <!-- Register button -->
+        <p class="mt-24 mb-4 text-2xl cursor-pointer flex-nowrap" @click="toggleRegisterDialog">Click to register</p> <!-- Register button -->
         <dialog ref="registerDialog">
           <form class="flex flex-wrap">
             <input type="text" class="flex-1 p-2 m-2 text-gray-300 bg-transparent border-b border-gray-500 focus:outline-none" placeholder="Name" v-model="name" />
@@ -30,7 +39,7 @@ const { fetchToken, name, email, password, user } = useUsers();
             <input type="password" class="flex-1 w-full p-2 m-2 text-gray-300 bg-transparent border-b border-gray-500 focus:outline-none" placeholder="Password" v-model="password"  /> 
             <button class="bg-[#10B981] text-white p-2 rounded hover:bg-[#059669] w-full mt-4" >Register</button> <!-- Register button -->
           </form>
-          <button class="w-full p-2 mt-2 text-white bg-red-600 rounded hover:bg-red-700" >Close</button> <!-- Close button -->
+          <button class="w-full p-2 mt-2 text-white bg-red-600 rounded hover:bg-red-700" @click="toggleRegisterDialog">Close</button> <!-- Close button -->
         </dialog>
       </div>
     </div>
