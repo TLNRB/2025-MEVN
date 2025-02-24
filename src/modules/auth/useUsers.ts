@@ -7,9 +7,9 @@ export const useUsers = () => {
    const error = ref<string | null>(null);
    const user = ref<User | null>(null);
 
-   const name = ref<string | null>(null);
-   const email = ref<string | null>(null);
-   const password = ref<string | null>(null);
+   const name = ref<string>('');
+   const email = ref<string>('');
+   const password = ref<string>('');
 
    const fetchToken = async (email: string, password: string): Promise<void> => {
       try {
@@ -36,7 +36,7 @@ export const useUsers = () => {
          isLoggedIn.value = true;
 
          localStorage.setItem('lsToken', authResponse.data.token);
-         localStorage.setItem('userIDToken', authResponse.data.userID);
+         localStorage.setItem('userIDToken', authResponse.data.userId);
 
          console.log('Token:', token.value);
          console.log('User is logged in: ', authResponse)
