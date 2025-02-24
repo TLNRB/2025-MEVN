@@ -75,5 +75,15 @@ export const useUsers = () => {
       }
    }
 
-   return { token, isLoggedIn, error, user, name, email, password, fetchToken, registerUser };
+   // Logout the user
+   const logout = () => {
+      token.value = null;
+      user.value = null;
+      isLoggedIn.value = false;
+      localStorage.removeItem('lsToken');
+      localStorage.removeItem('userIDToken');
+      console.log('User is logged out');
+   }
+
+   return { token, isLoggedIn, error, user, name, email, password, fetchToken, registerUser, logout };
 };

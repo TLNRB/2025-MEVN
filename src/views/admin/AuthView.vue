@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useUsers } from '@/modules/auth/useUsers';
 
-const { fetchToken, registerUser,  name, email, password, user } = useUsers();
+const { fetchToken, registerUser, logout,  name, email, password, user } = useUsers();
 
 const registerDialog = ref<HTMLDialogElement | null>(null);
 
@@ -26,7 +26,7 @@ const toggleRegisterDialog = () => {
         <input type="text" class="p-2 m-2 text-gray-300 bg-transparent border-b border-gray-500 focus:outline-none" placeholder="Email" v-model="email"  /> 
         <input type="password" class="p-2 m-2 text-gray-300 bg-transparent border-b border-gray-500 focus:outline-none" placeholder="Password" v-model="password" /> 
         <button class="bg-[#1E40AF] text-white p-2 rounded hover:bg-[#1E3A8A] w-full mt-4" @click="fetchToken(email, password)">Login</button> <!-- Login button -->
-        <button class="bg-[#4B5563] text-white p-2 rounded hover:bg-[#374151] w-full mt-2" >Logout</button> <!-- Logout button -->
+        <button class="bg-[#4B5563] text-white p-2 rounded hover:bg-[#374151] w-full mt-2" @click="logout">Logout</button> <!-- Logout button -->
       </div>
 
       <!-- Lower part: Register -->
