@@ -13,7 +13,7 @@ export const useUsers = () => {
 
    const fetchToken = async (email: string, password: string): Promise<void> => {
       try {
-         const response = await fetch('https://ments-restapi.onrender.com/api/user/login', {
+         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/login`, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -21,6 +21,8 @@ export const useUsers = () => {
             },
             body: JSON.stringify({ email, password })
          });
+
+         console.log('Response: ', response);
 
          if (!response.ok) {
             const errorResponse = await response.json();
@@ -50,7 +52,7 @@ export const useUsers = () => {
    // Register a new user
    const registerUser = async (name: string, email: string, password: string): Promise<void> => {
       try {
-         const response = await fetch('https://ments-restapi.onrender.com/api/user/register', {
+         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/register`, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',

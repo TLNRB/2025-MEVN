@@ -10,7 +10,7 @@ export const useProducts = () => {
       loading.value = true;
 
       try {
-         const response = await fetch('https://ments-restapi.onrender.com/api/products');
+         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products`);
          if (!response.ok) {
             throw new Error('Failed to fetch products');
 
