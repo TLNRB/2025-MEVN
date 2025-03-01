@@ -7,8 +7,11 @@ export type Product = {
    stock: number,
    discount: boolean,
    discountPct: number,
-   isHidden: boolean
+   isHidden: boolean,
+   _createdBy: string,
 }
+
+export type NewProduct = Omit<Product, '_id' | '_createdBy'> & { _createdBy?: string }
 
 export type User = {
    id: string,
