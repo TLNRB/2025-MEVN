@@ -89,25 +89,30 @@ export const useProducts = () => {
       }
    }
 
+   const deleteProductFromServer = async (id: string, token: string): Promise<void> => {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`, {
+         method: 'DELETE',
+         headers: {
+            'auth-token': token
+         }
+      });
+
+      if (!response.ok) {
+         throw new Error('Failed to delete product');
+      }
+   }
+
+   const removeProductFromState = (id: string): void => {
+      products.value = products.value.filter(product => product._id !== id);
+      console.log('Product deleted: ', id);
+   }
+
    const deleteProduct = async (id: string): Promise<void> => {
       try {
-         const token = localStorage.getItem('lsToken');
+         const { token } = await getTokenAndUserId();
 
-         if (!token) throw new Error('No token found');
-
-         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`, {
-            method: 'DELETE',
-            headers: {
-               'auth-token': token
-            }
-         });
-
-         if (!response.ok) {
-            throw new Error('Failed to delete product');
-         }
-
-         products.value = products.value.filter(product => product._id !== id);
-         console.log('Product deleted: ', id);
+         await deleteProductFromServer(id, token);
+         removeProductFromState(id);
       }
       catch (err) {
          error.value = (err as Error).message;
