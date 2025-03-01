@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { useProducts } from '@/modules/useProducts';
 
-const { products, fetchProducts, deleteProduct } = useProducts();
+const { products, fetchProducts, addProduct, deleteProduct } = useProducts();
 
 onMounted(() => {
   fetchProducts();
@@ -17,7 +17,7 @@ onMounted(() => {
     <div class="flex flex-wrap -mx-2">                                    <!-- add new product section -->
     <div class="w-full p-2 my-8">
       <h2 class="mb-4 text-2xl font-semibold">Add Product</h2>
-      <form>                                                               <!-- Add product form -->
+      <form @submit.prevent="addProduct">                                                               <!-- Add product form -->
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <input type="text" placeholder="Name" class="p-2 border rounded" />         <!-- Product name -->
           <span  class="absolute ml-2 text-xs text-red-500">Can't be empty</span> <!-- Error message & validate -->
