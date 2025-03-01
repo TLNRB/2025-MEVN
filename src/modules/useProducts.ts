@@ -28,5 +28,32 @@ export const useProducts = () => {
       }
    }
 
-   return { error, loading, products, fetchProducts };
+   const deleteProduct = async (id: string): Promise<void> => {
+      try {
+         const token = localStorage.getItem('lsToken');
+
+         if (!token) {
+            throw new Error('No token found');
+         }
+
+         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+               'auth-token': token
+            }
+         });
+
+         if (!response.ok) {
+            throw new Error('Failed to delete product');
+         }
+
+         products.value = products.value.filter(product => product._id !== id);
+         console.log('Product deleted: ', id);
+      }
+      catch (err) {
+         error.value = (err as Error).message;
+      }
+   }
+
+   return { error, loading, products, fetchProducts, deleteProduct };
 };

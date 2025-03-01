@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { useProducts } from '@/modules/useProducts';
 
-const { products, fetchProducts } = useProducts();
+const { products, fetchProducts, deleteProduct } = useProducts();
 
 onMounted(() => {
   fetchProducts();
@@ -52,7 +52,7 @@ onMounted(() => {
     <div class="w-full p-2 my-8">
 
       <h2 class="mb-4 text-2xl font-semibold">Products</h2>
-      <div v-for="product in products" :key="product.id" class="mb-4 p-4 border rounded bg-[#181818]"> <!-- Loop through the products -->
+      <div v-for="product in products" :key="product._id" class="mb-4 p-4 border rounded bg-[#181818]"> <!-- Loop through the products -->
          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <input type="text" placeholder="Name" v-model="product.name" class="p-2 border rounded" /> <!-- Product name -->
           <input type="text" placeholder="Description" v-model="product.description" class="p-2 border rounded" /> <!-- Product description -->
@@ -76,13 +76,13 @@ onMounted(() => {
           </div>
           <input type="text" v-model="product.imageURL" placeholder="Image URL" class="h-10 p-2 border rounded" /> <!-- Image URL -->
           <span>
-            Thumbnail img: <img :src="product.imageURL" alt="Product Image" class="object-cover w-24 w-full h-24 mb-4 rounded-lg"> <!-- Product image -->
+            Thumbnail img: <img :src="product.imageURL" alt="Product Image" class="object-cover w-24 h-24 mb-4 rounded-lg"> <!-- Product image -->
           </span>
         </div>
 
         <div class="flex mt-4 space-x-2"> <!-- Update and delete buttons -->
           <p>ID:  </p> <!-- Product ID for testing -->
-          <button  class="p-2 text-white bg-red-600 rounded hover:bg-red-700">Delete</button> <!-- Delete button -->
+          <button @click="deleteProduct(product._id)"  class="p-2 text-white bg-red-600 rounded hover:bg-red-700">Delete</button> <!-- Delete button -->
           <button  class="p-2 text-white bg-green-600 rounded hover:bg-green-700">Edit</button> <!-- Edit button -->
          </div>
       </div>
