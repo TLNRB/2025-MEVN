@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import type { Product } from '@/interfaces/interfaces';
+import type { Product, NewProduct } from '@/interfaces/interfaces';
 
 export const useProducts = () => {
    const error = ref<string | null>(null);
@@ -27,13 +27,41 @@ export const useProducts = () => {
       }
    }
 
-   const addProduct = async (/* product: Product */): Promise<void> => {
-      try {
-         const token = localStorage.getItem('lsToken');
-         const userId = localStorage.getItem('userIdToken');
+   const getTokenAndUserId = (): { token: string, userId: string } => {
+      const token = localStorage.getItem('lsToken');
+      const userId = localStorage.getItem('userIdToken');
 
-         if (!token) throw new Error('No token found');
-         if (!userId) throw new Error('No userId found');
+      if (!token) throw new Error('No token found');
+      if (!userId) throw new Error('No userId found');
+
+      return { token, userId };
+   }
+
+   const validateProduct = (product: NewProduct): void => {
+      if (!product.name) throw new Error('Name is required');
+   }
+
+   const setDefaultValues = (product: NewProduct, userId: string): NewProduct => {
+      return {
+         name: product.name,
+         description: product.description || 'New Product Description',
+         imageURL: product.imageURL || 'https://picsum.photos/500/500',
+         price: product.price || 16,
+         stock: product.stock || 5,
+         discount: product.discount || false,
+         discountPct: product.discountPct || 0,
+         isHidden: product.isHidden || false,
+         _createdBy: userId
+      }
+   }
+
+   const addProduct = async (product: NewProduct): Promise<void> => {
+      try {
+         const { token, userId } = getTokenAndUserId();
+
+         validateProduct(product);
+
+         const productWithDefaults = setDefaultValues(product, userId);
 
          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products`, {
             method: 'POST',
@@ -41,17 +69,7 @@ export const useProducts = () => {
                'Content-Type': 'application/json',
                'auth-token': token
             },
-            body: JSON.stringify({
-               name: 'New Product from Frontend',
-               description: 'New Product Description',
-               imageURL: 'https://picsum.photos/500/500',
-               price: 16,
-               stock: 5,
-               discount: false,
-               discountPct: 0,
-               isHidden: false,
-               _createdBy: userId
-            })
+            body: JSON.stringify(productWithDefaults)
          });
 
          if (!response.ok) {
@@ -96,5 +114,5 @@ export const useProducts = () => {
       }
    }
 
-   return { error, loading, products, fetchProducts, addProduct, deleteProduct };
+   return { error, loading, products, fetchProducts, addProduct, deleteProduct, getTokenAndUserId };
 };
