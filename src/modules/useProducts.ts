@@ -89,6 +89,53 @@ export const useProducts = () => {
       }
    }
 
+   const updateProductOnServer = async (id: string, token: string, updatedProduct: Partial<Product>): Promise<Product> => {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`, {
+         method: 'PUT',
+         headers: {
+            'Content-Type': 'application/json',
+            'auth-token': token
+         },
+         body: JSON.stringify(updatedProduct)
+      });
+
+      if (!response.ok) {
+         const errorResponse = await response.json();
+         throw new Error(errorResponse.error || 'Failed to update product');
+      }
+
+      const responseText = await response.text();
+      try {
+         return JSON.parse(responseText);
+      }
+      catch {
+         return { message: responseText } as unknown as Product;
+      }
+   }
+
+   const updateProductInState = (id: string, updatedProduct: Product): void => {
+      const index = products.value.findIndex(product => product._id === id);
+      if (index !== -1) {
+         products.value[index] = updatedProduct;
+
+      }
+   }
+
+   const updateProduct = async (id: string, updatedProduct: Partial<Product>): Promise<void> => {
+      try {
+         const { token } = await getTokenAndUserId();
+
+         const updatedProductResponse = await updateProductOnServer(id, token, updatedProduct);
+         updateProductInState(id, updatedProductResponse);
+         await fetchProducts();
+
+         console.log(updatedProductResponse);
+      }
+      catch (err) {
+         error.value = (err as Error).message;
+      }
+   }
+
    const deleteProductFromServer = async (id: string, token: string): Promise<void> => {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`, {
          method: 'DELETE',
@@ -119,5 +166,5 @@ export const useProducts = () => {
       }
    }
 
-   return { error, loading, products, fetchProducts, addProduct, deleteProduct, getTokenAndUserId };
+   return { error, loading, products, fetchProducts, addProduct, updateProduct, deleteProduct, getTokenAndUserId };
 };

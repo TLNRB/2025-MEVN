@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useProducts } from '@/modules/useProducts';
-import type { NewProduct } from '@/interfaces/interfaces';
+import type { NewProduct, Product } from '@/interfaces/interfaces';
 
-const { products, error, loading, fetchProducts, addProduct, deleteProduct, getTokenAndUserId } = useProducts();
+const { products, error, loading, fetchProducts, addProduct, deleteProduct, updateProduct, getTokenAndUserId } = useProducts();
 
 onMounted(() => {
   fetchProducts();
@@ -26,6 +26,11 @@ const addProductHandler = async () => {
   newProduct.value._createdBy = userId;
 
   await addProduct(newProduct.value);
+}
+
+const updateProductHandler = async (product: Product) => {
+  const { _id, ...updatedProduct } = product;
+  await updateProduct(product._id, updatedProduct);
 }
 </script>
 
@@ -103,7 +108,7 @@ const addProductHandler = async () => {
         <div class="flex mt-4 space-x-2"> <!-- Update and delete buttons -->
           <p>ID:  </p> <!-- Product ID for testing -->
           <button @click="deleteProduct(product._id)"  class="p-2 text-white bg-red-600 rounded hover:bg-red-700">Delete</button> <!-- Delete button -->
-          <button  class="p-2 text-white bg-green-600 rounded hover:bg-green-700">Edit</button> <!-- Edit button -->
+          <button @click="updateProductHandler(product)"  class="p-2 text-white bg-green-600 rounded hover:bg-green-700">Edit</button> <!-- Edit button -->
          </div>
       </div>
     </div>
