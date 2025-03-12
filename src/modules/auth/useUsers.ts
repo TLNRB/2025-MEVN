@@ -1,9 +1,10 @@
 import { ref } from 'vue';
 import type { User } from '@/interfaces/interfaces';
+import { state } from '@/modules/globalStates/state';
 
 export const useUsers = () => {
    const token = ref<string | null>(null);
-   const isLoggedIn = ref<boolean>(false);
+   /* const isLoggedIn = ref<boolean>(false); */
    const error = ref<string | null>(null);
    const user = ref<User | null>(null);
 
@@ -35,7 +36,7 @@ export const useUsers = () => {
 
          token.value = authResponse.data.token;
          user.value = authResponse.data.user;
-         isLoggedIn.value = true;
+         state.isLoggedIn = true;
 
          localStorage.setItem('lsToken', authResponse.data.token);
          localStorage.setItem('userIdToken', authResponse.data.userId);
@@ -45,7 +46,7 @@ export const useUsers = () => {
       }
       catch (err) {
          error.value = (err as Error).message || 'An error occurred';
-         isLoggedIn.value = false;
+         state.isLoggedIn = false;
       }
    }
 
@@ -81,11 +82,11 @@ export const useUsers = () => {
    const logout = () => {
       token.value = null;
       user.value = null;
-      isLoggedIn.value = false;
+      state.isLoggedIn = false;
       localStorage.removeItem('lsToken');
       localStorage.removeItem('userIdToken');
       console.log('User is logged out');
    }
 
-   return { token, isLoggedIn, error, user, name, email, password, fetchToken, registerUser, logout };
+   return { token, isLoggedIn: state.isLoggedIn, error, user, name, email, password, fetchToken, registerUser, logout };
 };
