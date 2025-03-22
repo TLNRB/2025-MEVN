@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useCart } from '@/modules/cart/useCart';
+
+const { cart, updateQuantity } = useCart();
+
 const isVisible = defineModel<boolean>('isVisible'); 
 
 const toggleCart = (): void => {
@@ -17,20 +21,20 @@ const toggleCart = (): void => {
           <button @click="toggleCart" class="absolute text-4xl text-red-400 top-3 right-4 hover:text-red-700">&times;</button> <!-- Close button -->
 
           <h2 class="mb-4 text-2xl font-bold">Cart</h2>
-          <div class="mb-4"> <!-- Loop through the cart items -->
+          <div v-for="item in cart" :key="item._id" class="mb-4"> <!-- Loop through the cart items -->
 
             <div class="flex pb-2">
-              <img  alt="Product Image" class="object-cover h-24 rounded-lg w-28"> <!-- Product image -->
+              <img :src="item.imageURL"  alt="Product Image" class="object-cover h-24 rounded-lg w-28"> <!-- Product image -->
               <div class="flex flex-col justify-between ml-2">
                 <div>
-                  <p class="font-semibold">  </p> <!-- Product name -->
-                  <p>Price:  </p> <!-- Product price -->
+                  <p class="font-semibold">{{ item.name }}</p> <!-- Product name -->
+                  <p>Price: {{ item.price.toFixed(2) }}</p> <!-- Product price -->
                   <p>Total:  </p> <!-- Total price of the product -->
                 </div>
                 <div class="flex items-center">
-                  <button  class="px-2 bg-orange-600">-</button>  <!-- Decrease quantity -->
-                  <span  ></span>
-                  <button  class="px-2 bg-teal-600">+</button>   <!-- Increase quantity -->
+                  <button @click="updateQuantity(item._id, item.quantity - 1)"  class="px-2 bg-orange-600">-</button>  <!-- Decrease quantity -->
+                  <span class="mx-2">{{ item.quantity }}</span>
+                  <button @click="updateQuantity(item._id, item.quantity + 1)"  class="px-2 bg-teal-600">+</button>   <!-- Increase quantity -->
                 </div>
 
               </div>
@@ -38,7 +42,7 @@ const toggleCart = (): void => {
             </div>
           </div>
 
-          <p class="text-center">Cart is empty</p> <!-- If cart is empty -->
+          <p v-if="cart.length === 0" class="text-center">Cart is empty</p> <!-- If cart is empty -->
 
           <div class="pt-4 border-t ">
             <p class="font-semibold text-right">Subtotal: $ </p> <!-- Total in the cart -->
