@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useProducts } from '@/modules/useProducts';
+import { useCart } from '@/modules/cart/useCart';
 
 const { products, error, loading, fetchProducts } = useProducts();
+const { addToCart } = useCart();
 
 onMounted(() => {
   fetchProducts();
@@ -25,7 +27,7 @@ onMounted(() => {
           <p class="mt-2 font-bold text-blue-500">{{ product.price }}</p>
           <div class="flex justify-between mt-4">
             <button class="px-1 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">Product Details</button>
-            <button class="px-1 py-2 text-white bg-green-500 rounded hover:bg-green-600">Add to Cart</button> <!-- Add to cart button -->
+            <button @click="addToCart(product)" class="px-1 py-2 text-white bg-green-500 rounded hover:bg-green-600">Add to Cart</button> <!-- Add to cart button -->
           </div>
         </div>
       </div>
