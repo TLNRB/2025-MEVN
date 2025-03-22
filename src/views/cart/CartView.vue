@@ -1,12 +1,16 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
   <div class="p-4">
-    <h2 class="text-2xl font-bold mb-4">Checkout Section</h2>
-    <p class="text-center pt-5">Items have been order <br> You have no orders currently</p> <!-- If cart is empty -->
+    <h2 class="mb-4 text-2xl font-bold">Checkout Section</h2>
+    <p class="pt-5 text-center">Items have been order <br> You have no orders currently</p> <!-- If cart is empty -->
     <div> <!-- If cart is not empty -->
-      <div class="flex items-center mb-4 border-b pb-4"> <!-- Loop through the cart items -->
+      <div class="flex items-center pb-4 mb-4 border-b"> <!-- Loop through the cart items -->
         <!-- First Column: Image -->
         <div class="w-1/6">
-          <img  alt="Product Image" class="w-full h-24 object-cover rounded-lg"> <!-- Product image -->
+          <img  alt="Product Image" class="object-cover w-full h-24 rounded-lg"> <!-- Product image -->
         </div>
         <!-- Second Column: Title and Description -->
         <div class="w-2/6 px-4">
@@ -14,10 +18,10 @@
          <!--  <p class="text-gray-500">{{ item.description }}</p> -->
         </div>
         <!-- Third Column: Quantity with + and - -->
-        <div class="w-1/6 flex items-center">
-          <button  class="bg-orange-600 px-2">-</button> <!-- Decrease quantity -->
+        <div class="flex items-center w-1/6">
+          <button  class="px-2 bg-orange-600">-</button> <!-- Decrease quantity -->
           <span class="mx-2"></span> <!-- Quantity -->
-          <button class="bg-teal-600 px-2">+</button> <!-- Increase quantity -->
+          <button class="px-2 bg-teal-600">+</button> <!-- Increase quantity -->
         </div>
         <!-- Fourth Column: Total Price -->
         <div class="w-1/6 text-right">
@@ -26,7 +30,7 @@
       </div>
 
       <!-- Summary Row -->
-      <div class="mt-4 pt-4">
+      <div class="pt-4 mt-4">
         <div class="flex justify-between mb-2">
           <p class="font-semibold">Subtotal:</p>
           <p>$</p> <!-- Total in the cart -->
@@ -44,16 +48,12 @@
           <p>$</p>  <!-- Grand total in the cart -->
         </div>
         <div class="flex justify-end">
-          <button class="bg-orange-600 text-white p-2 rounded hover:bg-orange-700" >Buy Now</button> <!-- Checkout button on click -->
+          <button class="p-2 text-white bg-orange-600 rounded hover:bg-orange-700" >Buy Now</button> <!-- Checkout button on click -->
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-
-</script>
 
 <style scoped>
 /* Add your styles here */

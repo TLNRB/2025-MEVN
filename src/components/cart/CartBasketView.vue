@@ -1,25 +1,36 @@
+<script setup lang="ts">
+const isVisible = defineModel<boolean>('isVisible'); 
+
+const toggleCart = (): void => {
+  isVisible.value = !isVisible.value;
+}
+
+
+</script>
+
+
 <template>
     <transition name="fade-slide">
-      <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-end" > <!-- Overlay + toggleCart -->
-        <div class="cart-content bg-[#181818] w-96 h-full p-4 overflow-y-auto" > <!-- Cart content & .stop -->
+      <div v-if="isVisible" @click.self="toggleCart" class="fixed inset-0 flex justify-end bg-black bg-opacity-50" > <!-- Overlay + toggleCart -->
+        <div @click.stop class="cart-content bg-[#181818] w-96 h-full p-4 overflow-y-auto" > <!-- Cart content & .stop -->
           <!-- top close X -->
-          <button class="absolute top-3 right-4 text-4xl text-red-400 hover:text-red-700">&times;</button> <!-- Close button -->
+          <button @click="toggleCart" class="absolute text-4xl text-red-400 top-3 right-4 hover:text-red-700">&times;</button> <!-- Close button -->
 
-          <h2 class="text-2xl font-bold mb-4">Cart</h2>
+          <h2 class="mb-4 text-2xl font-bold">Cart</h2>
           <div class="mb-4"> <!-- Loop through the cart items -->
 
             <div class="flex pb-2">
-              <img  alt="Product Image" class="h-24 w-28 object-cover rounded-lg"> <!-- Product image -->
-              <div class="flex ml-2 flex-col justify-between">
+              <img  alt="Product Image" class="object-cover h-24 rounded-lg w-28"> <!-- Product image -->
+              <div class="flex flex-col justify-between ml-2">
                 <div>
                   <p class="font-semibold">  </p> <!-- Product name -->
                   <p>Price:  </p> <!-- Product price -->
                   <p>Total:  </p> <!-- Total price of the product -->
                 </div>
                 <div class="flex items-center">
-                  <button  class="bg-orange-600 px-2">-</button>  <!-- Decrease quantity -->
+                  <button  class="px-2 bg-orange-600">-</button>  <!-- Decrease quantity -->
                   <span  ></span>
-                  <button  class="bg-teal-600 px-2">+</button>   <!-- Increase quantity -->
+                  <button  class="px-2 bg-teal-600">+</button>   <!-- Increase quantity -->
                 </div>
 
               </div>
@@ -30,25 +41,19 @@
           <p class="text-center">Cart is empty</p> <!-- If cart is empty -->
 
           <div class="pt-4 border-t ">
-            <p class="text-right font-semibold">Subtotal: $ </p> <!-- Total in the cart -->
-            <p class="text-right font-semibold">Sales tax: $ </p> <!-- Salestax in the cart -->
+            <p class="font-semibold text-right">Subtotal: $ </p> <!-- Total in the cart -->
+            <p class="font-semibold text-right">Sales tax: $ </p> <!-- Salestax in the cart -->
             <p class="font-semibold">Coupon Code:</p>
             <input type="text" class="border p-1 pr-2 bg-[#181818] text-right w-28" placeholder="Enter code"> <!-- Coupon code -->
-            <p class="text-right font-semibold">Grand Total: $ </p> <!-- Grand total in the cart -->
+            <p class="font-semibold text-right">Grand Total: $ </p> <!-- Grand total in the cart -->
             <div class="flex justify-end">
-              <button class="bg-green-600 text-white p-2 mt-4 rounded hover:bg-green-700">Checkout</button> <!-- Checkout button on click -->
+              <button class="p-2 mt-4 text-white bg-green-600 rounded hover:bg-green-700">Checkout</button> <!-- Checkout button on click -->
             </div>
           </div>
         </div>
       </div>
     </transition>
 </template>
-
-<script setup lang="ts">
-
-
-
-</script>
 
 <style scoped>
 .fade-slide-enter-active, .fade-slide-leave-active {

@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useUsers } from '@/modules/auth/useUsers';
 import { state } from '@/modules/globalStates/state';
+import CartBasket from '@/components/cart/CartBasketView.vue';
 
 const { logout } = useUsers();
 const isLoggedIn = computed(() => state.isLoggedIn);
 
+const isCartVisible = ref(false);
+
+const toggleCart = ():void => {
+  isCartVisible.value = !isCartVisible.value;
+};
 </script>
 
 <template class="w-screen">
@@ -24,7 +30,7 @@ const isLoggedIn = computed(() => state.isLoggedIn);
 
 
         <!-- toggle cart button -->
-
+         <button @click="toggleCart">Cart</button>
 
         <!-- Routerlink to orders -->
 
@@ -36,7 +42,7 @@ const isLoggedIn = computed(() => state.isLoggedIn);
   <RouterView />
 
   <!-- CartBasket component -->
-
+   <CartBasket v-if="isCartVisible" :isVisible="isCartVisible" />
 
 </template>
 
