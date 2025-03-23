@@ -45,5 +45,30 @@ export const useCart = () => {
       console.log('Updated cart: ', cart.value);
    }
 
-   return { cart, addToCart, updateQuantity }
+   const cartTotal = (): number => {
+      return Number(cart.value.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2));
+   }
+
+   const cartTotalIndividualProduct = (productId: string): number => {
+      const item = cart.value.find((item) => item._id === productId);
+      return item ? item.price * item.quantity : 0;
+   }
+
+   const salesTax = (): number => {
+      const taxRate: number = 0.25;
+      return Math.round(cartTotal() * taxRate * 100) / 100;
+   }
+
+   const code = ref<string>('');
+
+   const couponCodeDiscount = (code: string): number => {
+      const couponCodeAccepted = code === 'DISCOUNT';
+      return couponCodeAccepted ? 0.9 : 1;
+   }
+
+   const grandTotal = (): number => {
+      return Number(((cartTotal() + salesTax()) * couponCodeDiscount(code.value)).toFixed(2));
+   }
+
+   return { cart, addToCart, updateQuantity, cartTotal, cartTotalIndividualProduct, salesTax, code, grandTotal }
 }
