@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { useCart } from '@/modules/cart/useCart';
 </script>
 
 <template>
